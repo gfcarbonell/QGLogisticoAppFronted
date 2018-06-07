@@ -3,13 +3,13 @@ import {withRouter, Switch} from 'react-router-dom';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 //Actions
-//import {loginAuth} from '../actions/authenticate';
-import {logoutAuth} from '../actions/authenticate';
+import {logout} from '../actions/authenticate';
 //Main Components 
 import Header from '../components/header/containers/header';
 import Footer from '../components/footer/containers/footer';
 import NavBar from '../components/nav-bar/containers/nav-bar';
 import NavBarItem from '../components/nav-bar/items/nav-bar-item';
+import Login from './home/sections/login';
 //Logo -> Entity
 import logo from '../../media/images/png/QG-1.png';
 //Pages 
@@ -36,36 +36,37 @@ const footer = {
 
 const mapStateToProps = (state, props) => {
     return {
-        login: state.authenticateReducer,
+        session: state.authenticateReducer,
     }
 }
 
 const mapDispatchToProps = (dispatch, props) => {
     const actions = {
-        logoutAuth: bindActionCreators(logoutAuth, dispatch),
+        logout: bindActionCreators(logout, dispatch),
     };
     return actions;
 }
 
 
 class Main extends React.Component {
-    
+    handleLogout = (event) =>{
+
+    }
     render() {
-        console.log(this.props.login);
+        const authenticated = this.props.session.authenticated;
         return (
             <div className='main'>
                 <Header header={header} style={style.header}/>
                 <NavBar style={style.navBar}>
-                    <NavBarItem to={'/'}> Inicio </NavBarItem>
-                    {this.props.login.isAuthenticated ? null : <NavBarItem to={'/login'} > Iniciar sesión </NavBarItem>}
-                    {this.props.login.isAuthenticated ? <NavBarItem to={'/logout'} > Cerrar sesión </NavBarItem> : null}
+                    <NavBarItem to={'/'} handleClick={this.props.handleLogout}> Inicio </NavBarItem>
+                    {this.props.session.authenticated ? null : <NavBarItem to={'/login'} > Iniciar sesión </NavBarItem>}
+                    {this.props.session.authenticated ? <NavBarItem to={'/logout'} onClick={this.props.handleLogout}> Cerrar sesión </NavBarItem> : null}
                 </NavBar>
                 <section>
                     <main>
                         <Switch>
-                            <PublicRoute exact isAuthenticated={true} path={'/'} component={()=><li> Inicio </li>}/>
-                            <PublicRoute isAuthenticated={true} path={'/login'} component={()=><li> Login </li>}/>
-                            <PrivateRoute isAuthenticated={true} path={'/dashboard'} component={()=><li> Dashboard </li>}/>
+                            <PublicRoute exact authenticated={true} path={'/'} component={()=><li> Inicio </li>}/>
+                            <PrivateRoute authenticated={true} path={'/login'} component={Login}/>
                         </Switch>
                     </main>
                 </section>  

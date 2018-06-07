@@ -6,18 +6,19 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 
 //Actions
+import {login} from '../../../actions/authenticate';
 import {loginAuth} from '../../../actions/authenticate';
 import loginAvatar from '../../../../media/images/png/Key-1.png';
 
 const mapStateToProps = (state, props) => {
     return {
-        login: state.authenticateReducer,
+        session: state.authenticateReducer
     }
 }
 
 const mapDispatchToProps = (dispatch, props) => {
     const actions = {
-        loginAuth: bindActionCreators(loginAuth, dispatch),
+        login:bindActionCreators(loginAuth, dispatch),
     };
     return actions;
 }
@@ -29,7 +30,7 @@ class Login extends React.Component{
             username:this.inputUsername.input.value,
             password:this.inputPassword.input.value
         });
-        this.props.loginAuth(user);
+        this.props.login(user);
     }
     setInputUsername = (element) => {
         this.inputUsername = element;
@@ -56,7 +57,7 @@ class Login extends React.Component{
                                     <Icon>account_circle</Icon>
                                 </Input>
                                 <p className='error font-style-italic center-align red-text font-weight-bolder'> 
-                                    {this.props.login.error? this.props.login.error.username:'' } 
+                                    {this.props.session.error? this.props.session.error.username:'' } 
                                 </p>
                             </Row>
                             <Row>
@@ -64,7 +65,7 @@ class Login extends React.Component{
                                     <Icon>security</Icon>
                                 </Input>
                                 <p className='error font-style-italic center-align red-text font-weight-bolder'> 
-                                    {this.props.login.error? this.props.login.error.password:'' } 
+                                    {this.props.session.error? this.props.session.error.password:'' } 
                                 </p>
                             </Row>
                             <Row className='container-center'>

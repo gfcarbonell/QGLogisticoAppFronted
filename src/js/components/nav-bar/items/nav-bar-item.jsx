@@ -5,7 +5,7 @@ const NavBarItem = (props) => {
     let to = (props.to)? props.to : '/';
     return (
         <li> 
-            <Link to={to}>
+            <Link ref={props.setRef} to={to} onClick={props.onClick}>
                 {props.children}
             </Link>
         </li>

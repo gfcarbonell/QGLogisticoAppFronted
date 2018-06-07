@@ -4,19 +4,19 @@ import { Route, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 
-const PublicRoute = ( { component: Component, isAuthenticated, rest } ) => (
+const PublicRoute = ( { component: Component, authenticated, rest } ) => (
     <Route
         {...rest} 
-        render={props => isAuthenticated === false? <Component {...props}/>:<Redirect to='/dashboard' />}
+        render={props => authenticated === false? <Component {...props}/>:<Redirect to='/' />}
         />
   )
 
 PublicRoute.propTypes = {
-    isAuthenticated: PropTypes.bool.isRequired
+    authenticated: PropTypes.bool.isRequired
 };
 
 PublicRoute.defaultProps = {
-    isAuthenticated: false,
+    authenticated: false,
 };
 /*
 const mapStateToProps = state => ({
